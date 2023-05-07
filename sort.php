@@ -31,6 +31,7 @@ div.gallery2 img:hover {
 div.gallery3 {
     margin: 25px;
     width: 260px;
+	height:500px;
 	float:left;
 }
 div.gallery3 img {
@@ -44,8 +45,9 @@ div.gallery3 img:hover {
 	overflow:hidden;
 }
 div.gallery4 {
-    margin: 10px;
+    margin: 5px;
     width: 330px;
+	height:400px;
 	float:left;
 }
 div.gallery4 img {
@@ -117,12 +119,45 @@ div.gallery8 img:hover {
 	height:360px;
 	overflow:hidden;
 }
+div.gallery181 {
+    margin: 1px;
+    float:left;
+    width: 332px;
+	height:450px;
+}
+div.gallery181 img {
+    width: 325px;
+    height:300px;
+	padding-left:58px;
+}
+div.gallery181 img:hover {
+    width: 335px;
+	height:300px;
+	overflow:hidden;
+}
+div.gallery171 {
+    margin: 20px;
+    float:left;
+    width: 280px;
+	height:300px;
+}
+div.gallery171 img {
+    width: 270px;
+    height:280px;
+	padding-left:58px;
+}
+div.gallery171 img:hover {
+    width: 275px;
+	height:280px;
+	overflow:hidden;
+}
 div.desc1 {
     padding: 15px;
     text-align: center;
 	font-size:11px;
 	background-color:#ffffff;
 }
+
 </style>
 <?php
 $mb=$_GET['q'];
@@ -305,7 +340,7 @@ else if($mb==122)
 }
 else if($mb==41)
 {
-	echo "<ul style='list-style-type:none;padding-left:85px'>";
+	echo "<ul style='list-style-type:none;padding-left:45px'>";
 	$sql17="select * from tv where offerprice<20000";
 	$res17=$con->query($sql17);
 			  while($row17 = $res17->fetch_array())
@@ -338,12 +373,23 @@ else if($mb==131)
 }
 else if($mb==132)
 {
-	echo "<ul style='list-style-type:none;padding-left:85px'>";
+	echo "<ul style='list-style-type:none;padding-left:45px'>";
 	$sql20="select * from tv where displaysize between 39 and 43";
 	$res20=$con->query($sql20);
 			  while($row20 = $res20->fetch_array())
 			  {
 				  echo "<li><div class='gallery4'><a href='tvspecification.php?id=$row20[0]'><img src='".$row20[4]."'><div class='desc1'><p style='font-weight:900;font-size:14px'>".$row20[2]."</p><p style='color:#006600;font-weight:600;font-size:12px'><strike>&#8377;".$row20[9]."</strike></p><p style='font-weight:600;font-size:12px;color:#5c8a8a'>NOW &#8377;" .$row20[10]."</p></div></a></div></li>";
+			  }
+			  echo "</ul>";
+}
+else if($mb==134)
+{
+	echo "<ul style='list-style-type:none;padding-left:45px'>";
+	$sql134="select * from tv where displaysize>43";
+	$res134=$con->query($sql134);
+			  while($row134 = $res134->fetch_array())
+			  {
+				  echo "<li><div class='gallery4'><a href='tvspecification.php?id=$row134[0]'><img src='".$row134[4]."'><div class='desc1'><p style='font-weight:900;font-size:14px'>".$row134[2]."</p><p style='color:#006600;font-weight:600;font-size:12px'><strike>&#8377;".$row134[9]."</strike></p><p style='font-weight:600;font-size:12px;color:#5c8a8a'>NOW &#8377;" .$row134[10]."</p></div></a></div></li>";
 			  }
 			  echo "</ul>";
 }
@@ -457,6 +503,28 @@ else if($mb==71)
 			  }
 			  echo "</ul>";
 }
+else if($mb==171)
+{
+	echo "<ul style='list-style-type:none;padding-left:15px'>";
+	$sql171="select * from watches where id>=25 and gender='M'";
+	$res171=$con->query($sql171);
+			  while($row171 = $res171->fetch_array())
+			  {
+				   echo "<li><div class='gallery171'><a href='watchesspecification.php?id=$row171[0]'><img src='".$row171[4]."'><div class='desc1'><p style='font-weight:900;font-size:14px'>".$row171[2]."</p><p style='color:#006600;font-weight:600;font-size:12px'><strike>&#8377;".$row171[8]."</strike></p><p style='font-weight:600;font-size:12px;color:#5c8a8a'>NOW &#8377;" .$row171[9]."</p></div></a></div></li>";
+			  }
+			  echo "</ul>";
+}
+else if($mb==181)
+{
+	echo "<ul style='list-style-type:none;padding-left:5px'>";
+	$sql181="select * from wear where id >=10 and gender='M'";
+	$res181=$con->query($sql181);
+			  while($row181 = $res181->fetch_array())
+			  {
+				   echo "<li><div class='gallery181'><a href='wearspecification.php?id=$row181[0]'><img src='".$row181[3]."'><div class='desc1'><p style='font-weight:900;font-size:14px'>".$row181[2]."</p><p style='color:#006600;font-weight:600;font-size:12px'><strike>&#8377;".$row181[8]."</strike></p><p style='font-weight:600;font-size:12px;color:#5c8a8a'>NOW &#8377;" .$row181[9]."</p></div></a></div></li>";
+			  }
+			  echo "</ul>";
+}
 else if($mb==72)
 {
 	echo "<ul style='list-style-type:none;padding-left:15px'>";
@@ -465,6 +533,28 @@ else if($mb==72)
 			  while($row31 = $res31->fetch_array())
 			  {
 				  echo "<li><div class='gallery7'><a href='watchesspecification.php?id=$row31[0]'><img src='".$row31[4]."'><div class='desc1'><p style='font-weight:900;font-size:14px'>".$row31[2]."</p><p style='color:#006600;font-weight:600;font-size:12px'><strike>&#8377;".$row31[8]."</strike></p><p style='font-weight:600;font-size:12px;color:#5c8a8a'>NOW &#8377;" .$row31[9]."</p></div></a></div></li>";
+			  }
+			  echo "</ul>";
+}
+else if($mb==172)
+{
+	echo "<ul style='list-style-type:none;padding-left:15px'>";
+	$sql172="select * from watches where id>=25 and gender='F'";
+	$res172=$con->query($sql172);
+			  while($row172 = $res172->fetch_array())
+			  {
+				   echo "<li><div class='gallery171'><a href='watchesspecification.php?id=$row172[0]'><img src='".$row172[4]."'><div class='desc1'><p style='font-weight:900;font-size:14px'>".$row172[2]."</p><p style='color:#006600;font-weight:600;font-size:12px'><strike>&#8377;".$row172[8]."</strike></p><p style='font-weight:600;font-size:12px;color:#5c8a8a'>NOW &#8377;" .$row172[9]."</p></div></a></div></li>";
+			  }
+			  echo "</ul>";
+}
+else if($mb==182)
+{
+	echo "<ul style='list-style-type:none;padding-left:5px'>";
+	$sql182="select * from wear where id >=10 and gender='F'";
+	$res182=$con->query($sql182);
+			  while($row182 = $res182->fetch_array())
+			  {
+				   echo "<li><div class='gallery181'><a href='wearspecification.php?id=$row182[0]'><img src='".$row182[3]."'><div class='desc1'><p style='font-weight:900;font-size:14px'>".$row182[2]."</p><p style='color:#006600;font-weight:600;font-size:12px'><strike>&#8377;".$row182[8]."</strike></p><p style='font-weight:600;font-size:12px;color:#5c8a8a'>NOW &#8377;" .$row182[9]."</p></div></a></div></li>";
 			  }
 			  echo "</ul>";
 }
@@ -556,6 +646,7 @@ else if($mb==162)
 			  }
 			  echo "</ul>";
 }
+
 else
 {
 	echo "<center><p style='font-size:38px;padding-top:200px'>Such item is not present</p></center>";
