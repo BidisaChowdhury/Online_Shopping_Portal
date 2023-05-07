@@ -5,7 +5,11 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <style>
+input:hover{
+	font-weight:600;
+}
 nav {
     float: left;
     max-width: 220px;
@@ -38,39 +42,39 @@ article {
  div.gallery1 {
     margin: 5px;
     float:left;
-    width: 250px;
+    width: 260px;
 	height:500px;
 }
 div.gallery2 {
-    margin: 5px;
+    margin: 20px;
     float:left;
     width: 220px;
-	height:400px;
+	height:300px;
 }
 div.gallery1 img {
-    width: 235px;
+    width: 255px;
     height:360px;
-	padding-left:58px;
+	padding-left:38px;
 }
 div.gallery2 img {
-    width: 190px;
-    height:300px;
+    width: 180px;
+    height:250px;
 	padding-left:58px;
 }
 
 div.gallery1 img:hover {
-    width: 245px;
+    width: 265px;
 	height:360px;
 	overflow:hidden;
 }
 div.gallery2 img:hover {
-    width: 200px;
-	height:300px;
+    width: 190px;
+	height:250px;
 	overflow:hidden;
 }
 
 div.desc1 {
-    padding: 15px;
+    padding: 5px;
     text-align: center;
 	font-size:11px;
 	background-color:#ffffff;
@@ -83,6 +87,25 @@ div.desc1 {
 #result :hover
 {
 	font-size:22px;
+}
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+#myBtn:hover {
+  background-color: #555;
 }
 </style>
 <script>
@@ -108,7 +131,28 @@ function fx(str)
 		}
 	
 }
+function fy(str)
+{
+		if (str.length == 0)
+		{ 
+			document.getElementById("View").innerHTML = "";
+			return;
+		} 
+		else
+		{
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() 
+			{
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+				{
+					document.getElementById("View").innerHTML = xmlhttp.responseText;
+				}
+			}
+			xmlhttp.open("GET", "viewmobile.php?q=women", true);
+			xmlhttp.send();
+		}
 	
+}
 function fz(str)
 {
 		if (str.length == 0)
@@ -130,6 +174,21 @@ function fz(str)
 			xmlhttp.send();
 		}
 	
+}
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
 }
 
 </script>
@@ -161,23 +220,40 @@ function fz(str)
 	?>	</header><div style='padding-left:312px' id='Result'></div><br>
 	<nav>
 		<p style="padding-left:4px;background-color:#000099;color:#ffffff;font-size:20px"> Sort Watches By Price </p>
+		<div style="box-shadow: 1px 2px 2px 2px #d6d6c2;width:190px;height:100px">
 		<input type='radio' name='n11' onChange='fz(this.value)' value='81'> Less than 1,000 <br>
 		<input type='radio' name='n11' onChange='fz(this.value)' value='82'> Between 1,000 to 2,000 <br>
 		<input type='radio' name='n11' onChange='fz(this.value)' value='83'> More than 2,000 <br>
+		</div>
 	</nav>
 <article>
+<script>
+$(document).ready(function(){
+    $("#hide").click(function(){
+        $("#hide").hide();
+    });
+});
+</script>
+<span style='float:right;background-color:#ffffff'><button style='background-color:#3333ff;color:#ffffff;width:105px;height:40px;font-size:15px' type='submit' value='View All' name='btn' id='hide' onClick='fy(this.value)'>VIEW ALL</button></span>
+<br><br><br>
 <div id="Res">
+<div id="View">
 <?php
 	$con=new MySQLi("localhost","root","","project");
-	$sql="select * from wear where gender='F'";
+	$sql="select * from wear where gender='F' ";
 	$res=$con->query($sql);
 	echo "<ul style='list-style-type:none;padding-left:15px'>";
+	$count=0;
 	while($row=$res->fetch_array())
 	{
-		echo "<li><div class='gallery1'><a href='wearspecification.php?id=$row[0]'><img src='".$row[3]."'><div class='desc1'><p style='font-weight:900;font-size:14px'>".$row[2]."</p><p style='color:#006600;font-weight:600;font-size:12px'><strike>&#8377;".$row[8]."</strike></p><p style='font-weight:600;font-size:12px;color:#5c8a8a'>NOW &#8377;" .$row[9]."</p></div></a></div></li>";
+		if($count<8)
+		{
+			echo "<li><div class='gallery1'><a href='wearspecification.php?id=$row[0]'><img src='".$row[3]."'><div class='desc1'><p style='font-weight:900;font-size:14px'>".$row[2]."</p><p style='color:#006600;font-weight:600;font-size:12px'><strike>&#8377;".$row[8]."</strike></p><p style='font-weight:600;font-size:12px;color:#5c8a8a'>NOW &#8377;" .$row[9]."</p></div></a></div></li>";
+		}
+		$count++;
     }
 	echo "</ul>";
-	$sql="select * from watches where gender='F' order by offerprice";
+	$sql="select * from watches where gender='F' and id between 1 and 6";
 	$res=$con->query($sql);
 	echo "<ul style='list-style-type:none;padding-left:15px'>";
 	while($row=$res->fetch_array())
@@ -187,6 +263,8 @@ function fz(str)
 	echo "</ul>";
 ?>
 </div>
+</div>
 </article>
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 </body>
 </html>                          
