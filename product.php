@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <html>
 <head>
 <meta charset="utf-8">
@@ -5,7 +8,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-
+<!-- <script src="C:\xampp\htdocs\onlineshop\chatbot.js"></script> -->
 <style>
 .dropbtn {
     color:#0066ff;
@@ -132,7 +135,9 @@
 	font-weight:700;
 	text-decoration:underline;
 }
-
+input:hover{
+	font-weight:600;
+}
 nav {
     float: left;
     max-width: 220px;
@@ -144,17 +149,32 @@ nav ul {
     list-style-type: none;
     padding: 0;
 	color:#0066ff;
+	position:fixed;
 }
    
 nav ul a {
-    text-decoration: none;
+	text-decoration: none;
 	padding-left:20px;
 	font-size:20px;
 	font-family: serif;
 }
-
+blink {
+           color:red;
+		   font-size:18px;
+		   font-weight:800;
+           -webkit-animation: blink 1s step-end infinite;
+           animation: blink 1s step-end infinite
+         }
+ 
+          @-webkit-keyframes blink {
+          67% { opacity: 0 }
+         }
+ 
+         @keyframes blink {
+         67% { opacity: 0 }
+        }
 article {
-    margin-left: 220px;
+    margin-left: 240px;
     border-left: 1px solid gray;
     padding: 1em;
     overflow: hidden;
@@ -174,6 +194,7 @@ article {
 }
 
 </style>
+<script src="C:\xampp\htdocs\onlineshop\chatbot.js"></script>
 <script>
 function fx(str)
 {
@@ -199,19 +220,31 @@ function fx(str)
 }
 
 </script>
+<script>
+  window.watsonAssistantChatOptions = {
+    integrationID: "25557223-9018-4c1e-9724-18c6c3df2869", // The ID of this integration.
+    region: "au-syd", // The region your integration is hosted in.
+    serviceInstanceID: "9e0c586b-f134-4539-9adb-92f7a98fa612", // The ID of your service instance.
+    onLoad: async (instance) => { await instance.render(); }
+  };
+  setTimeout(function(){
+    const t=document.createElement('script');
+    t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+    document.head.appendChild(t);
+  });
+</script>
+<!-- <script src="C:\xampp\htdocs\onlineshop\chatbot.js"></script> -->
 </head>
 <body>
-<header style="background-color:#555;height:70px">
+<header style="background-color:#555;height:70px;position:fixed;width:100%">
 <p style="padding-top:10px">
 	<a href="index.php"><i class="glyphicon glyphicon-home" style="font-size:30px;color:#ffffff;padding-left:30px">HOME</i></a>
 	<?php
-		session_start();
 		$cookie=0;
 		if(isset($_COOKIE['user']))
 		{
 			$cookie=$_COOKIE['user'];
 		}
-		
 		if(isset($_SESSION['id']))
 		{
 			$id=$_SESSION['id'];
@@ -227,10 +260,10 @@ function fx(str)
 		}
 	?>
 	</p>
-	</header><br>
+	</header><br><br><br><br>
 <nav>
-	<p style="padding-left:12px;background-color:#000099;color:#ffffff;font-size:22px">CATEGORIES</p>
-  <ul>
+	<p style="padding-left:6px;padding-right:6px;background-color:#000099;color:#ffffff;font-size:30px;position:fixed"> CATEGORIES </p><br><br>
+  <ul style="box-shadow: 2px 2px 2px 2px #d6d6c2;width:215px;height:185px;border-radius:25px">
     <li><div class="dropdown">
 			<div class="dropbtn">ELECTRONICS
 				<i class="fa fa-caret-right"></i>
@@ -265,21 +298,22 @@ function fx(str)
 	</li>
 	<li><a href="grocery.php">GROCERY</a></li>
 	<li><a href="books.php">BOOKS</a></li>
-  </ul>
+	<li><a href="new1.php"><blink>NEW COLLECTIONS!</blink></a></li>
+   </ul>
 </nav>
 
 <article>
 	<nav>
 	
 	<div class="w3-content w3-section" style="max-height:500px">
-	
+  <img class="mySlides" style="width:1100px;height:350px" src="images/online-logo-1.jpg">
   <img class="mySlides" style="width:1100px;height:350px" src="images/consumer-electronics.png">
   <img class="mySlides" style="width:1100px;height:350px" src="images/xhm_bnr2.jpg.pagespeed.ic.p9sDfgIMoy.jpg">
   <img class="mySlides" style="width:1100px;height:350px" src="images/latest-top-fashion-trends-of-wedding-bridal-designer-sarees-in-india-online-shopping-2016-2017.jpg">
   <img class="mySlides" style="width:1100px;height:350px" src="images/homebanner-menshopheader-21jan2013.jpg">
   <img class="mySlides" style="width:1100px;height:350px" src="images/grocery-items-png-8800965151-1107.png">
   <img class="mySlides" style="width:1100px;height:350px" src="images/Urval_av_de_bocker_som_har_vunnit_Nordiska_radets_litteraturpris_under_de_50_ar_som_priset_funnits.jpg">
-  <div style='padding-left:64px' id='Result'></div>
+  <div style='padding-left:44px' id='Result'></div>
 </div>
 <script>
 		var myIndex = 0;
@@ -303,11 +337,11 @@ function fx(str)
 		{
 			$id=$_SESSION['id'];
 			$con=new MySQLi("localhost","root","","project");
-			$sql="select distinct(modelname) from history where cid=$id order by id desc ";
+			$sql="select distinct(modelname) from history where cid=$id order by id desc";
 			$res=$con->query($sql);
 			echo "<article>
 				<p style='font-weight:800;font-size:24px;color:#000099'>RECENTLY VIEWED BY YOU.....
-					<span style='float:right;background-color:#ffffff'><a href='viewall.php'><button style='background-color:#ffffff;color:#000099;width:105px;height:40px;font-size:15px' type='submit' value='View All' name='btn'>VIEW ALL</button></a></span></p>";
+					</p>";
 			$c=$res->num_rows;
 			$count=0;
 			if($c>=1)
@@ -325,7 +359,7 @@ function fx(str)
 						{
 							if($count1<1)
 							{
-								echo "<li><div style='margin:20px;width: 210px;float:left'><img style='width:200px;height:320px' src='".$row1[6]."'><div style='padding: 5px;text-align: center;	font-size:11px;background-color:#ffffff'><p style='font-weight:900;font-size:14px'>".$row1[4]."</p><p style='font-weight:600;font-size:12px;color:#5c8a8a'>NOW &#8377;" .$row1[5]."</p></div></div></li>";
+								echo "<li><div style='margin:20px;width: 210px;float:left'><a href='view.php?q=$model'><img style='width:150px;height:300px' src='".$row1[6]."'><div style='padding-left: 2px;text-align:left;font-size:11px;background-color:#ffffff'><p style='font-weight:900;font-size:14px'>".$row1[4]."</p><p style='text-align:center;font-weight:600;font-size:12px;color:#5c8a8a'>NOW &#8377;" .$row1[5]."</p></a></div></div></li>";
 							}
 							$count1++;
 						}
@@ -336,7 +370,7 @@ function fx(str)
 			}
 			else
 			{
-				echo 'No Recent Views Available';
+				echo "<p style='font-size:24px;font-weight:500;text-align:center'>No Recent Views Available</p>";
 			}
 		}
 		else
@@ -356,6 +390,7 @@ function fx(str)
 			</article><br><br>";
 		}
 ?>		
+
 </body>
 </html>    
    
